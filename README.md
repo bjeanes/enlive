@@ -25,19 +25,6 @@ Or install it yourself as:
 ~~~ ruby
 require 'enlive'
 
-blog_posts = [
-  {
-    title: "My First Post",
-    body: "<a href=\"http://github.com/bjeanes\">click here</a>",
-    posted_at: Time.now - 1.hour
-  },
-  {
-    title: "My Second Post",
-    body: "<a href=\"http://github.com/bjeanes\">click here again</a>",
-    posted_at: Time.now
-  }
-]
-
 $views = Enlive::ViewGroup.new
 style_guide = "path/to/file.html" # relative to current directory
 
@@ -67,10 +54,27 @@ $views.defsnippet(:article_list, style_guide, "body > section#articles") do |lis
   end
 end
 
+##################################################################
+
 # Create a helper function to render the view
 def articles_page(title, articles)
   $views.layout(title, $views.article_list(title, articles)).to_s
 end
+
+blog_posts = [
+  {
+    title: "My First Post",
+    body: "<a href=\"http://github.com/bjeanes\">click here</a>",
+    posted_at: Time.now - 1.hour
+  },
+  {
+    title: "My Second Post",
+    body: "<a href=\"http://github.com/bjeanes\">click here again</a>",
+    posted_at: Time.now
+  }
+]
+
+articles_page("My Latest Posts", blog_posts)
 ~~~
 
 ## Contributing
