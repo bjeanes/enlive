@@ -26,14 +26,21 @@ Or install it yourself as:
 require 'enlive'
 
 $views = Enlive::ViewGroup.new
+
+# Let's use a "style guide" template from our designer
 style_guide = "path/to/file.html" # relative to current directory
 
-$views.deftemplate(:layout, style_guide) do |title, content|
+# We'll create a "view" based on the entire style guide template and
+# call it `layout`:
+$views.define(:layout, style_guide) do |title, content|
   with("head > title") { |title_el| title_el.content = title }
   with("body")         { |body| body.children = content }
 end
 
-$views.defsnippet(:article, style_guide, "body article") do |article|
+# We'll create a "view" based on an example article that our designer
+# added to the style guide template. We'll call it `article` and
+# locate it in the template using the CSS selector `body article`:
+$views.define(:article, style_guide, "body article") do |article|
   with("header h1")       { |h1| h1.content = article[:title] }
   with("section.content") { |sec| sec.content = article[:body] }
   with("header time") do |time|
@@ -42,13 +49,17 @@ $views.defsnippet(:article, style_guide, "body article") do |article|
   end
 end
 
-$views.defsnippet(:article_list, style_guide, "body > section#articles") do |list_title, articles|
+# Now we'll define a "view" for a list of articles. We'll base this
+# off the `body > section#articles` element in our template. Let's
+# call this "view" `article_list`.
+$views.define(:article_list, style_guide, "body > section#articles") do |list_title, articles|
   with("> h1")      { |h1| h1.content = list_title }
   with(".articles") { |list| list.delete }
 
   with(".articles") do |list|
     articles.each do |article|
-      # create an article snippet from each article object
+      # call our article view method (created above) for each article object
+      # and add it as a child to the article list element
       list << $views.article(article)
     end
   end
@@ -74,7 +85,9 @@ blog_posts = [
   }
 ]
 
-articles_page("My Latest Posts", blog_posts)
+# Get the string of our assembled page, populated with our data, and
+# designed by our designer, using their own optimized and ideal workflow
+articles_page("My Latest Posts", blog_posts) # => "<html><head>..."
 ~~~
 
 ## Contributing
