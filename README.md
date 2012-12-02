@@ -1,6 +1,10 @@
 # Enlive
 
-TODO: Write a gem description
+HTML templating library that lets you create composable pure functions
+for your views based on applying modifications to HTML templates using selectors.
+
+Loosely based on the templating portion of Christophe Grand's
+fantastic (if under-documented and under-appreciated) [Enlive](https://github.com/cgrand/enlive) for [Clojure](http://clojure.org).
 
 ## Installation
 
